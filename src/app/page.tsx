@@ -1,20 +1,14 @@
 "use client";
 
-import {
-  Box,
-  Typography,
-  Grid,
-  Button,
-  Card,
-  CardMedia,
-  CardContent,
-} from "@mui/material";
+import ProductCard from "@/components/ProductCard";
+import { Box, Typography, Grid, Button } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const categories = [
-  { label: "🔮 Kamienie", href: "/kategorie/kamienie", color: "#ec4899" },
-  { label: "🌫️ Kadzidełka", href: "/kategorie/kadzidelka", color: "#facc15" },
-  { label: "🧿 Talizmany", href: "/kategorie/talizmany", color: "#4ade80" },
+  { label: "🔮 Kamienie", href: "/kategoria/kamienie", color: "#ec4899" },
+  { label: "🌫️ Kadzidełka", href: "/kategoria/kadzidelka", color: "#facc15" },
+  { label: "🧿 Talizmany", href: "/kategoria/talizmany", color: "#4ade80" },
 ];
 
 const featured = [
@@ -22,6 +16,7 @@ const featured = [
     id: 1,
     name: "Kryształ Górski",
     price: 30,
+    category: "kamienie",
     image:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Rock_Crystal.jpg/320px-Rock_Crystal.jpg",
   },
@@ -29,6 +24,7 @@ const featured = [
     id: 2,
     name: "Palo Santo",
     price: 15,
+    category: "kadzidełka",
     image:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Palo_Santo.jpg/320px-Palo_Santo.jpg",
   },
@@ -36,6 +32,7 @@ const featured = [
     id: 3,
     name: "Oko Horusa",
     price: 45,
+    category: "talizmany",
     image:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Protective_amulet%2C_Egypt.jpg/320px-Protective_amulet%2C_Egypt.jpg",
   },
@@ -108,36 +105,7 @@ export default function FrontPage() {
 
       <Grid container spacing={4} justifyContent="center">
         {featured.map((item) => (
-          <Grid item xs={12} sm={6} md={4} key={item.id}>
-            <Card
-              sx={{
-                border: "4px solid #ec4899",
-                backgroundColor: "#6b21a8",
-              }}
-            >
-              <CardMedia
-                component="img"
-                height="200"
-                image={item.image}
-                alt={item.name}
-                sx={{
-                  border: "2px solid #facc15",
-                  objectFit: "cover",
-                }}
-              />
-              <CardContent>
-                <Typography
-                  variant="h6"
-                  sx={{ color: "#fff", fontFamily: "Courier New" }}
-                >
-                  {item.name}
-                </Typography>
-                <Typography sx={{ color: "#facc15" }}>
-                  {item.price} zł
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+          <ProductCard product={item} key={item.id} />
         ))}
       </Grid>
     </Box>

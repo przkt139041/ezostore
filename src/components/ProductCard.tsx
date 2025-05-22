@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Product } from "@/types";
 import { FC } from "react";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
   product: Product;
@@ -16,17 +17,29 @@ interface ProductCardProps {
 }
 
 const ProductCard: FC<ProductCardProps> = ({ product, onAddToCart }) => {
+  const router = useRouter();
   return (
     <Card
       sx={{
         border: "4px solid #ec4899",
         backgroundColor: "#6b21a8",
+        width: 250,
+        height: 350,
+        cursor: "pointer",
+        transition: "transform 0.2s, box-shadow 0.2s",
+        "&:hover": {
+          transform: "scale(1.05)",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+        },
+      }}
+      onClick={() => {
+        router.push(`/produkt/${product.id}`);
       }}
     >
       <CardMedia
         component="img"
         height="200"
-        image={product.image}
+        image={`/pics/${product.image}`}
         alt={product.name}
         sx={{
           border: "2px solid #facc15",
