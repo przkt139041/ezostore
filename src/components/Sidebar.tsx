@@ -1,0 +1,38 @@
+"use client";
+
+import { Divider, List, Typography } from "@mui/material";
+
+const categories = ["Kamienie", "Kadzidełka", "Talizmany"];
+
+export default function Sidebar() {
+  return (
+    <>
+      <Typography
+        variant="h6"
+        sx={{ color: "#facc15", mb: 2, fontWeight: 600 }}
+      >
+        Kategorie
+      </Typography>
+      <Divider sx={{ mb: 2, borderColor: "#333" }} />
+      <List>
+        {categories.map((cat) => (
+          <Typography
+            key={cat}
+            variant="body1"
+            sx={{
+              color: "#4ade80",
+              mb: 1,
+              fontWeight: 400,
+              "&:hover": {
+                textDecoration: "underline",
+                cursor: "pointer",
+              },
+            }}
+          >
+            {cat}
+          </Typography>
+        ))}
+      </List>
+    </>
+  );
+}
