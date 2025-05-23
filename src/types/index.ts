@@ -21,3 +21,8 @@ export type ProductFromApi = {
   ocena?: number;
   recenzje?: number;
 };
+
+export type CartItem = {
+  product: Product;
+  quantity: number;
+};

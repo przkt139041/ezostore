@@ -1,9 +1,16 @@
 "use client";
 
 import ProductCard from "@/components/ProductCard";
-import { Box, Typography, Grid, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  Button,
+  Divider,
+  Container,
+  Stack,
+} from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 const categories = [
   { label: "🔮 Kamienie", href: "/kategoria/kamienie", color: "#ec4899" },
@@ -40,45 +47,75 @@ const featured = [
 
 export default function FrontPage() {
   return (
-    <Box sx={{ px: 4, py: 6 }}>
-      {/* Powitanie */}
-      <Typography
-        variant="h2"
+    <Container
+      maxWidth="lg"
+      sx={{
+        py: 6,
+        fontFamily: '"Courier New", monospace',
+      }}
+    >
+      <Box
         sx={{
-          color: "#facc15",
           textAlign: "center",
-          fontWeight: 700,
-          letterSpacing: 2,
-          mb: 2,
+          mb: 6,
+          py: 4,
+          background: "linear-gradient(90deg, #facc15, #ec4899, #4ade80)",
+          backgroundSize: "300% 300%",
+          animation: "gradientMove 10s ease infinite",
+          border: "4px double #fff",
         }}
       >
-        🌌 Witaj w Galaktycznym Sklepie 🌌
-      </Typography>
+        <Typography
+          variant="h2"
+          sx={{
+            color: "#000",
+            textShadow: "1px 1px 0 #fff, 2px 2px 0 #ec4899",
+            fontWeight: 900,
+            letterSpacing: 4,
+            fontSize: "2.8rem",
+          }}
+        >
+          ✨ Witaj w GALAKTYCZNYM SKLEPIE ✨
+        </Typography>
+        <Typography sx={{ color: "#000", mt: 2, fontSize: "1.1rem" }}>
+          💫 Artefakty ezoteryczne • Magiczne kadzidła • Ochronne talizmany 💫
+        </Typography>
+      </Box>
+
+      {/* Kategorie 90s */}
       <Typography
-        variant="subtitle1"
-        sx={{ textAlign: "center", color: "#ddd", mb: 6 }}
+        variant="h4"
+        sx={{
+          color: "#ec4899",
+          fontWeight: 700,
+          textAlign: "center",
+          mb: 3,
+          letterSpacing: 2,
+          textTransform: "uppercase",
+          textShadow: "1px 1px 0 #fff",
+        }}
       >
-        Odkryj tajemnicze artefakty, kadzidła i kamienie dla duszy i ciała ✨
+        ➤ Przeglądaj kategorie
       </Typography>
 
-      {/* Kategorie */}
-      <Grid container spacing={4} justifyContent="center" sx={{ mb: 8 }}>
+      <Grid container spacing={3} justifyContent="center" sx={{ mb: 8 }}>
         {categories.map((cat) => (
-          <Grid item xs={12} sm={4} key={cat.label}>
+          <Grid item xs={12} sm={6} md={4} key={cat.label}>
             <Link href={cat.href}>
               <Button
-                variant="outlined"
                 fullWidth
                 sx={{
-                  borderColor: cat.color,
+                  border: `3px dashed ${cat.color}`,
+                  backgroundColor: "#000",
                   color: cat.color,
-                  fontWeight: 600,
-                  fontSize: 18,
-                  letterSpacing: 2,
-                  py: 2,
+                  py: 2.5,
+                  fontSize: "1.2rem",
+                  fontWeight: 800,
+                  fontFamily: '"Courier New", monospace',
                   "&:hover": {
                     backgroundColor: cat.color,
                     color: "#000",
+                    borderColor: "#fff",
                   },
                 }}
               >
@@ -89,25 +126,45 @@ export default function FrontPage() {
         ))}
       </Grid>
 
-      {/* Bestsellery */}
+      <Divider sx={{ borderColor: "#999", mb: 6 }} />
+
+      {/* Polecane */}
       <Typography
         variant="h4"
         sx={{
-          color: "#facc15",
-          fontWeight: 600,
-          letterSpacing: 2,
-          mb: 4,
+          color: "#4ade80",
+          fontWeight: 700,
           textAlign: "center",
+          mb: 4,
+          textShadow: "0 0 6px #4ade80",
+          letterSpacing: 1,
         }}
       >
-        🌟 Najczęściej wybierane 🌟
+        ✹ Polecane artefakty ✹
       </Typography>
 
-      <Grid container spacing={4} justifyContent="center">
-        {featured.map((item) => (
-          <ProductCard product={item} key={item.id} />
+      <Grid container spacing={4}>
+        {featured.map((product) => (
+          <Grid item xs={12} sm={6} md={4} key={product.id}>
+            <ProductCard product={product} />
+          </Grid>
         ))}
       </Grid>
-    </Box>
+
+      {/* Styl animacji */}
+      <style jsx global>{`
+        @keyframes gradientMove {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+      `}</style>
+    </Container>
   );
 }

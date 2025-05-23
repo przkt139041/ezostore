@@ -16,9 +16,10 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <body>
-        <Layout>
-          <ThemeRegistry>{children}</ThemeRegistry>
-        </Layout>
+        <ThemeRegistry>
+          {" "}
+          <Layout>{children} </Layout>
+        </ThemeRegistry>
       </body>
     </html>
   );

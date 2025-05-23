@@ -1,15 +1,28 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { Box, Typography, Grid, CircularProgress } from "@mui/material";
+import { useParams, useRouter } from "next/navigation";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Stack,
+  Breadcrumbs,
+  Link as MuiLink,
+  IconButton,
+  Grid,
+} from "@mui/material";
 import ProductCard from "@/components/ProductCard";
 import { Product, ProductFromApi } from "@/types";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import NextLink from "next/link";
 
 export default function CategoryPage() {
   const { category } = useParams() as { category: string };
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -45,12 +58,26 @@ export default function CategoryPage() {
 
   return (
     <Box sx={{ px: 4, py: 6 }}>
-      <Typography
-        variant="h4"
-        sx={{ color: "#facc15", fontWeight: 600, mb: 4 }}
-      >
-        {decodeURIComponent(category).toUpperCase()}
-      </Typography>
+      {/* Strzałka wstecz */}
+      <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
+        <IconButton onClick={() => router.push("/")} sx={{ color: "#facc15" }}>
+          <ArrowBackIcon />
+        </IconButton>
+        <Breadcrumbs separator="›" aria-label="breadcrumbs">
+          <MuiLink
+            component={NextLink}
+            href="/"
+            underline="hover"
+            sx={{ color: "#facc15" }}
+          >
+            strona główna
+          </MuiLink>
+
+          <Typography sx={{ color: "#fff" }}>
+            {category.toLowerCase()}
+          </Typography>
+        </Breadcrumbs>
+      </Stack>
 
       {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>

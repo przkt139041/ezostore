@@ -4,6 +4,7 @@ import { Box, Typography, Badge, IconButton } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
 import { Menu } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 type Props = {
   cartOpen: boolean;
@@ -19,7 +20,7 @@ export default function Header({
   setMenuOpen,
 }: Props) {
   const [cartCount] = useState(0); // TODO: zamień na globalny stan (np. Zustand)
-
+  const router = useRouter();
   return (
     <Box
       sx={{
@@ -49,6 +50,10 @@ export default function Header({
           alignItems: "center",
           justifyContent: "center",
           flex: 1,
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          router.push("/");
         }}
       >
         <Box

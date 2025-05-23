@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   Box,
@@ -10,13 +10,19 @@ import {
   Card,
   CardMedia,
   CardContent,
-  Divider,
   Rating,
   Stack,
+  Breadcrumbs,
+  Link as MuiLink,
+  IconButton,
 } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Product } from "@/types";
+import NextLink from "next/link";
+import { addToCart } from "@/utils/cart-handler";
 
 export default function ProductPage() {
+  const router = useRouter();
   const { productId } = useParams() as { productId: string };
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,7 +44,7 @@ export default function ProductPage() {
           image: data.zdj.split("/").pop() || "",
           category: data.kategoria,
           description: data.opis,
-          stock: data.ilosc,
+          stock: data.ilosc ?? 173,
           rating: data.ocena,
           reviews: data.recenzje,
         };
@@ -72,12 +78,49 @@ export default function ProductPage() {
 
   return (
     <Box sx={{ px: 4, py: 6 }}>
+      {/* Strzałka wstecz */}
+      <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
+        <IconButton onClick={() => router.back()} sx={{ color: "#facc15" }}>
+          <ArrowBackIcon />
+        </IconButton>
+        <Breadcrumbs separator="›" aria-label="breadcrumbs">
+          <MuiLink
+            component={NextLink}
+            href="/"
+            underline="hover"
+            sx={{ color: "#facc15" }}
+          >
+            strona główna
+          </MuiLink>
+          <MuiLink
+            component={NextLink}
+            href={`/kategoria/${encodeURIComponent(
+              product.category.toLowerCase()
+            )}`}
+            underline="hover"
+            sx={{ color: "#facc15" }}
+          >
+            {product.category.toLowerCase()}
+          </MuiLink>
+          <Typography sx={{ color: "#fff" }}>
+            {product.name.toLowerCase()}
+          </Typography>
+        </Breadcrumbs>
+      </Stack>
+
+      {/* Produkt */}
       <Card
         sx={{
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
           border: "4px solid #ec4899",
           backgroundColor: "#6b21a8",
+          width: "10%",
+          animation: "widenCard 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards",
+          "@keyframes widenCard": {
+            from: { width: "10%" },
+            to: { width: "100%" },
+          },
         }}
       >
         <CardMedia
@@ -126,7 +169,7 @@ export default function ProductPage() {
           <Typography sx={{ color: "#a3e635", fontSize: 14, mb: 2 }}>
             Dostępność:{" "}
             {product.stock && product.stock > 0 ? (
-              <strong>{product.stock} sztuk</strong>
+              <strong>Dostępny</strong>
             ) : (
               <span style={{ color: "#f87171" }}>Brak w magazynie</span>
             )}
@@ -144,6 +187,9 @@ export default function ProductPage() {
             }}
             fullWidth
             disabled={!product.stock}
+            onClick={async () => {
+              await addToCart(product.id);
+            }}
           >
             Do koszyka
           </Button>

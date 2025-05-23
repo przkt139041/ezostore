@@ -10,13 +10,13 @@ import {
 import { Product } from "@/types";
 import { FC } from "react";
 import { useRouter } from "next/navigation";
+import { addToCart } from "@/utils/cart-handler";
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart?: (product: Product) => void;
 }
 
-const ProductCard: FC<ProductCardProps> = ({ product, onAddToCart }) => {
+const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const router = useRouter();
   return (
     <Card
@@ -24,7 +24,7 @@ const ProductCard: FC<ProductCardProps> = ({ product, onAddToCart }) => {
         border: "4px solid #ec4899",
         backgroundColor: "#6b21a8",
         width: 250,
-        height: 350,
+        height: 400,
         cursor: "pointer",
         transition: "transform 0.2s, box-shadow 0.2s",
         "&:hover": {
@@ -51,23 +51,21 @@ const ProductCard: FC<ProductCardProps> = ({ product, onAddToCart }) => {
           {product.name}
         </Typography>
         <Typography sx={{ color: "#facc15" }}>{product.price} zł</Typography>
-        {onAddToCart && (
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={() => onAddToCart(product)}
-            sx={{
-              mt: 2,
-              backgroundColor: "#facc15",
-              color: "#000",
-              "&:hover": {
-                backgroundColor: "#fde047",
-              },
-            }}
-          >
-            Do koszyka
-          </Button>
-        )}
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={async () => await addToCart(product.id)}
+          sx={{
+            mt: 2,
+            backgroundColor: "#facc15",
+            color: "#000",
+            "&:hover": {
+              backgroundColor: "#fde047",
+            },
+          }}
+        >
+          Do koszyka
+        </Button>
       </CardContent>
     </Card>
   );
