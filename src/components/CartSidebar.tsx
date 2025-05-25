@@ -9,7 +9,7 @@ export default function CartSidebar() {
 
   const updateQuantity = async (id: number, quantity: number) => {
     await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/cart`, {
-      method: "PATCH",
+      method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, quantity }),

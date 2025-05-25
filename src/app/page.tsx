@@ -8,7 +8,6 @@ import {
   Button,
   Divider,
   Container,
-  Stack,
 } from "@mui/material";
 import Link from "next/link";
 
