@@ -19,13 +19,28 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Product } from "@/types";
 import NextLink from "next/link";
-import { addToCart } from "@/utils/cart-handler";
+import { useCartContext } from "@/context/CartContext";
 
 export default function ProductPage() {
   const router = useRouter();
   const { productId } = useParams() as { productId: string };
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const [widthExpanded, setWidthExpanded] = useState(false);
+  const [heightExpanded, setHeightExpanded] = useState(false);
+
+  useEffect(() => {
+    const w = setTimeout(() => setWidthExpanded(true), 100); // start width animation
+    const h = setTimeout(() => setHeightExpanded(true), 100); // start height after width
+
+    return () => {
+      clearTimeout(w);
+      clearTimeout(h);
+    };
+  }, []);
+
+  const { addToCart, loading: loadingAddToCart } = useCartContext();
 
   useEffect(() => {
     if (!productId) return;
@@ -90,20 +105,20 @@ export default function ProductPage() {
             underline="hover"
             sx={{ color: "#facc15" }}
           >
-            strona główna
+            STRONA GŁÓWNA
           </MuiLink>
           <MuiLink
             component={NextLink}
             href={`/kategoria/${encodeURIComponent(
-              product.category.toLowerCase()
-            )}`}
+              product.category
+            ).toLowerCase()}`}
             underline="hover"
             sx={{ color: "#facc15" }}
           >
-            {product.category.toLowerCase()}
+            {product.category.toUpperCase()}
           </MuiLink>
           <Typography sx={{ color: "#fff" }}>
-            {product.name.toLowerCase()}
+            {product.name.toUpperCase()}
           </Typography>
         </Breadcrumbs>
       </Stack>
@@ -115,12 +130,11 @@ export default function ProductPage() {
           flexDirection: { xs: "column", md: "row" },
           border: "4px solid #ec4899",
           backgroundColor: "#6b21a8",
-          width: "10%",
-          animation: "widenCard 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards",
-          "@keyframes widenCard": {
-            from: { width: "10%" },
-            to: { width: "100%" },
-          },
+          width: widthExpanded ? "100%" : "20%",
+          maxHeight: heightExpanded ? 1000 : 300, // wartość maxHeight wystarczająca dla treści
+          overflow: "hidden",
+          transition:
+            "width 0.7s ease, max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.7s", // opóźniamy start animacji wysokości
         }}
       >
         <CardMedia
@@ -135,8 +149,20 @@ export default function ProductPage() {
           }}
         />
 
-        <CardContent sx={{ flex: 1 }}>
-          <Typography variant="h4" sx={{ color: "#facc15", mb: 1 }}>
+        <CardContent
+          sx={{
+            flex: 1,
+            opacity: heightExpanded ? 1 : 0,
+            transition: "opacity 0.7s ease 1s",
+          }}
+        >
+          <Typography
+            variant="h4"
+            sx={{
+              color: "#facc15",
+              mb: 1,
+            }}
+          >
             {product.name}
           </Typography>
 
@@ -148,13 +174,13 @@ export default function ProductPage() {
           <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
             <Rating
               name="read-only"
-              value={product.rating || 0}
+              value={product.rating || Math.random() + 3}
               precision={0.5}
               readOnly
               sx={{ color: "#facc15" }}
             />
             <Typography sx={{ color: "#e5e5e5", fontSize: 14 }}>
-              ({product.reviews ?? 0} recenzji)
+              ({product.reviews ?? (Math.random() * 100).toFixed()} recenzji)
             </Typography>
           </Stack>
 
@@ -190,6 +216,7 @@ export default function ProductPage() {
             onClick={async () => {
               await addToCart(product.id);
             }}
+            loading={loadingAddToCart}
           >
             Do koszyka
           </Button>

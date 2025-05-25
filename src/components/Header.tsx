@@ -2,9 +2,10 @@
 
 import { Box, Typography, Badge, IconButton } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { useCartContext } from "@/context/CartContext";
 
 type Props = {
   cartOpen: boolean;
@@ -19,7 +20,18 @@ export default function Header({
   menuOpen,
   setMenuOpen,
 }: Props) {
-  const [cartCount] = useState(0); // TODO: zamień na globalny stan (np. Zustand)
+  const { cartItems } = useCartContext();
+  const [cartCount, setCartCount] = useState(
+    cartItems ? cartItems.reduce((acc, item) => acc + item.quantity, 0) : 0
+  );
+
+  useEffect(() => {
+    if (cartItems) {
+      const count = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+      setCartCount(count);
+    }
+  }, [cartItems]);
+
   const router = useRouter();
   return (
     <Box
@@ -31,6 +43,10 @@ export default function Header({
         py: 2,
         borderBottom: "1px solid #333",
         backgroundColor: "#000",
+        height: "10vh",
+        position: "sticky",
+        top: 0,
+        zIndex: 1200,
       }}
     >
       {/* Menu button */}
@@ -61,8 +77,8 @@ export default function Header({
           src="/assets/logowpg4.png"
           alt="Logo"
           sx={{
-            width: 128,
-            height: 128,
+            width: 64,
+            height: 64,
             overflow: "hidden",
             mr: 2,
             animation: "spin 8s linear infinite",
@@ -100,8 +116,8 @@ export default function Header({
           src="/assets/logowpg4.png"
           alt="Logo"
           sx={{
-            width: 128,
-            height: 128,
+            width: 64,
+            height: 64,
             overflow: "hidden",
             ml: 2,
             animation: "spin 8s linear infinite reverse",

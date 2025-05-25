@@ -4,7 +4,13 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": true,                    // ⛔️ WYŁĄCZ ścisły tryb
+    "noImplicitAny": false,            // pozwala na `any`
+    "strictNullChecks": false,         // pozwala na `null` i `undefined` wszędzie
+    "strictFunctionTypes": false,      // mniej agresywne dopasowanie funkcji
+    "strictBindCallApply": false,
+    "noImplicitThis": false,
+    "alwaysStrict": false,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",

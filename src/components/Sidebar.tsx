@@ -1,10 +1,12 @@
 "use client";
 
-import { Box, Divider, List, Typography } from "@mui/material";
+import { Box, Divider, List, Typography, Link as MuiLink } from "@mui/material";
+import { useRouter } from "next/navigation";
 
-const categories = ["Kamienie", "Kadzidełka", "Talizmany"];
+const categories = ["Kamienie", "Kadzidełka", "Biżuteria"];
 
 export default function Sidebar() {
+  const router = useRouter();
   return (
     <>
       <Typography
@@ -14,7 +16,14 @@ export default function Sidebar() {
         Kategorie
       </Typography>
       <Divider sx={{ mb: 2, borderColor: "#333" }} />
-      <Box sx={{ justifyContent: "space-between" }}>
+      <Box
+        sx={{
+          justifyContent: "space-between",
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+        }}
+      >
         <List>
           {categories.map((cat) => (
             <Typography
@@ -29,22 +38,16 @@ export default function Sidebar() {
                   cursor: "pointer",
                 },
               }}
+              onClick={() => {
+                router.push(
+                  `/kategoria/${encodeURIComponent(cat.toLowerCase())}`
+                );
+              }}
             >
               {cat}
             </Typography>
           ))}
         </List>
-        {/* <Box
-          component={"img"}
-          src="/assets/GWARANCJABEZPIECZNYCHZAKUPOW.jpg"
-          alt=""
-          sx={{
-            width: "90%",
-            bottom: 0,
-            left: 0,
-            position: "absolute",
-          }}
-        /> */}
       </Box>
     </>
   );

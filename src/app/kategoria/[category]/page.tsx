@@ -16,9 +16,20 @@ import ProductCard from "@/components/ProductCard";
 import { Product, ProductFromApi } from "@/types";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import NextLink from "next/link";
+import { useTokenContext } from "@/context/TokenContext";
 
 export default function CategoryPage() {
   const { category } = useParams() as { category: string };
+  const { isTokenValid, specialItems } = useTokenContext();
+
+  if (category == "special" && !isTokenValid) {
+    return (
+      <Typography sx={{ color: "#f87171", mt: 4 }}>
+        404 - Nie znaleziono strony
+      </Typography>
+    );
+  }
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,6 +42,9 @@ export default function CategoryPage() {
           `${process.env.NEXT_PUBLIC_HOST_API}/kategoria/${category}`
         );
         const data = await res.json();
+        if (!data || !Array.isArray(data)) {
+          return;
+        }
         const newData = data.map((item: ProductFromApi) => ({
           id: item.id,
           name: item.nazwa,
@@ -70,11 +84,11 @@ export default function CategoryPage() {
             underline="hover"
             sx={{ color: "#facc15" }}
           >
-            strona główna
+            STRONA GŁÓWNA
           </MuiLink>
 
           <Typography sx={{ color: "#fff" }}>
-            {category.toLowerCase()}
+            {decodeURIComponent(category).toUpperCase()}
           </Typography>
         </Breadcrumbs>
       </Stack>
