@@ -1,9 +1,9 @@
 import { ProductFromApi } from "@/types";
 
 export async function addToCart(productId: number) {
-  await fetch(`${process.env.NEXT_PUBLIC_HOST_API}/cart`, {
+  await fetch(`${process.env.NEXT_PUBLIC_HOST_API}/koszyk`, {
     method: "POST",
-    credentials: "include", // <- najważniejsze!
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -12,7 +12,7 @@ export async function addToCart(productId: number) {
 }
 
 export async function fetchCart() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_API}/cart`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_API}/koszyk`, {
     method: "GET",
     credentials: "include", // KLUCZOWE! umożliwia wysłanie ciasteczka sesji
   });
