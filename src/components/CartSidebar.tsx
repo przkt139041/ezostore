@@ -174,7 +174,11 @@ export default function CartSidebar() {
               backgroundColor: "#fde047",
             },
           }}
-          disabled={!cartItems || cartItems.length === 0}
+          disabled={
+            !cartItems ||
+            cartItems.length === 0 ||
+            cartItems.reduce((sum, { quantity }) => sum + quantity, 0) <= 0
+          }
         >
           Do kasy
         </Button>

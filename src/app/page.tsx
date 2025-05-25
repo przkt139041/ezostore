@@ -48,6 +48,8 @@ const featured = [
 export default function FrontPage() {
   const { isTokenValid, specialItems } = useTokenContext();
 
+  console.warn("WszystkieProduktyGalaktykiZapraszaja::::3KeWm");
+
   return (
     <Container
       maxWidth="lg"
@@ -164,7 +166,7 @@ export default function FrontPage() {
 
       <Divider sx={{ borderColor: "#999", mb: 6 }} />
 
-      {isTokenValid && specialItems.length > 0 && (
+      {isTokenValid && specialItems.length > 0 ? (
         <Box sx={{ mb: 4, textAlign: "center" }}>
           <Typography
             variant="h4"
@@ -187,6 +189,12 @@ export default function FrontPage() {
             ))}
           </Grid>
         </Box>
+      ) : (
+        <Typography>
+          <span style={{ color: "black" }}>
+            WszystkieProduktyGalaktykiZapraszaja::::1XaPq
+          </span>
+        </Typography>
       )}
 
       {/* Styl animacji */}
